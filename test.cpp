@@ -1,46 +1,42 @@
 #define TESTING
 #include <gtest/gtest.h>
 #include <mpi.h>
-#include "hockeyGame.сpp" // Убедитесь, что этот файл существует и содержит объявление класса HockeyGame
+#include "hockeyGame.cpp"
 
-// Мок функций для проверки передачи шайбы
 TEST(PassPuckTest, SameTeamPass) {
-    std::srand(0); // Зафиксировать генерацию случайных чисел для всех процессов
+    std::srand(0);
     HockeyGame game(0, 12);
-    game.currentHolder = 2; // Игрок 2 из первой команды
+    game.setCurrentHolder(2);
     game.passPuck();
 
-    // Важно: шайба должна быть передана другому игроку (внутри одной команды)
-    EXPECT_NE(game.currentHolder, 2);
+    EXPECT_NE(game.getCurrentHolder(), 2);
 }
 
 TEST(PassPuckTest, OpponentTeamPass) {
-    std::srand(0); // Зафиксировать генерацию случайных чисел
+    std::srand(0);
     HockeyGame game(0, 12);
-    game.currentHolder = 2; // Игрок 2 из первой команды
+    game.setCurrentHolder(2);
     game.passPuck();
 
-    // Проверяем, что шайба передана противнику
-    EXPECT_NE(game.currentHolder / 6, 0);  // Игрок из другой команды
+    EXPECT_NE(game.getCurrentHolder() / 6, 0);
 }
 
 TEST(ScoreTest, UpdateScore) {
     HockeyGame game(0, 12);
 
-    // После успешного гола для команды 0
-    game.successfulPasses = SUCCESSFUL_PASSES_FOR_GOAL;
+    // Убедимся, что currentHolder принадлежит команде 1
+    game.setCurrentHolder(0);
+    game.setSuccessfulPasses(SUCCESSFUL_PASSES_FOR_GOAL);
     game.passPuck();
-
-    EXPECT_EQ(game.teamScores[0], 1); // Команда 0 должна получить 1 гол
+    EXPECT_EQ(game.getTeamScore(0), 1);
 }
 
 TEST(GameTest, PlayGameSingleProcess) {
     HockeyGame game(0, 12);
     game.playGame();
 
-    // Можно протестировать состояние после игры
-    EXPECT_GE(game.teamScores[0], 0);
-    EXPECT_GE(game.teamScores[1], 0);
+    EXPECT_GE(game.getTeamScore(0), 0);
+    EXPECT_GE(game.getTeamScore(1), 0);
 }
 
 int main(int argc, char **argv) {
