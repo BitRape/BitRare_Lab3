@@ -31,7 +31,7 @@ jobs:
       - name: Install g++ and compile the program
         run: |
           sudo apt-get install -y g++
-          g++ -fopenmp OpenMp_Lab2.cpp -o main
+          g++ -fopenmp hockey_simulation.cpp -o main
 
       # Compile and run tests
       - name: Compile and run tests
