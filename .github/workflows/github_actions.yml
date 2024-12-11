@@ -23,6 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v4
+
       # Install CppUnit for testing
       - name: Install cppunit
         run: sudo apt install -y libcppunit-dev
@@ -32,6 +33,14 @@ jobs:
         run: |
           sudo apt-get install -y g++
           g++ -fopenmp hockey_simulation.cpp -o main
+
+      # Install MPI
+      - name: Install MPI
+        run: sudo apt-get install -y libopenmpi-dev openmpi-bin
+
+      # Compile the program with MPI
+      - name: Compile the program with MPI
+        run: mpic++ -o mpi_program hockey_simulation.cpp
 
       # Compile and run tests
       - name: Compile and run tests
