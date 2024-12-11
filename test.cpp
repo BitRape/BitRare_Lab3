@@ -12,6 +12,18 @@ TEST(PassPuckTest, SameTeamPass) {
     EXPECT_NE(game.getCurrentHolder(), 2);
 }
 
+TEST(PassPuckTest, MultipleSameTeamPasses) {
+    std::srand(0);
+    HockeyGame game(0, 12);
+    game.setCurrentHolder(2);
+
+    int initialTeam = game.getCurrentHolder() / 6;
+    for (int i = 0; i < 5; ++i) {
+        game.passPuck();
+        EXPECT_EQ(game.getCurrentHolder() / 6, initialTeam);
+    }
+}
+
 TEST(PassPuckTest, OpponentTeamPass) {
     std::srand(0);
     HockeyGame game(0, 12);
