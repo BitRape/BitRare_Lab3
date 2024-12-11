@@ -36,6 +36,10 @@ jobs:
       - name: Install MPI
         run: sudo apt-get install -y libopenmpi-dev openmpi-bin
 
+      # Install Google Test
+      - name: Install Google Test
+        run: sudo apt-get install -y libgtest-dev
+
       # Compile the program with MPI
       - name: Compile the program with MPI
         run: mpic++ -o mpi_program hockey_simulation.cpp
@@ -43,7 +47,7 @@ jobs:
       # Compile and run tests
       - name: Compile and run tests
         run: |
-          g++ test.cpp -lcppunit -o test
+          g++ test.cpp -lgtest -lgtest_main -o test
           chmod +x test
           ./test
 
