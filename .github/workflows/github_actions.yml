@@ -1,57 +1,33 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "*" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build-n-test:
-    # Лучше выбирать конкретную версию Ubuntu, чтобы избежать неожиданностей
     runs-on: ubuntu-22.04
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v4
 
-      # Install CppUnit for testing
-      - name: Install cppunit
-        run: sudo apt install -y libcppunit-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcppunit-dev g++ libopenmpi-dev openmpi-bin libgtest-dev
 
-      # Install g++
-      - name: Install g++
-        run: sudo apt-get install -y g++
-
-      # Install MPI
-      - name: Install MPI
-        run: sudo apt-get install -y libopenmpi-dev openmpi-bin
-
-      # Install Google Test
-      - name: Install Google Test
-        run: sudo apt-get install -y libgtest-dev
-
-      # Compile the program with MPI
       - name: Compile the program with MPI
         run: mpic++ -o mpi_program hockeyGame.cpp
 
-      # Compile and run tests
       - name: Compile and run tests
         run: |
-          g++ test.cpp -lgtest -lgtest_main -o test
+          mpic++ test.cpp -lgtest -lgtest_main -o test
           chmod +x test
-          ./test
+          mpiexec -n 1 ./test
 
-      # Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
