@@ -26,7 +26,7 @@ TEST(ScoreTest, UpdateScore) {
 
     // Убедимся, что currentHolder принадлежит команде 1
     game.setCurrentHolder(0);
-    game.setSuccessfulPasses(SUCCESSFUL_PASSES_FOR_GOAL);
+    game.setSuccessfulPasses(SUCCESSFUL_PASSES_FOR_GOAL - 1);
     game.passPuck();
     EXPECT_EQ(game.getTeamScore(0), 1);
 }
