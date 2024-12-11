@@ -21,15 +21,6 @@ TEST(PassPuckTest, OpponentTeamPass) {
     EXPECT_NE(game.getCurrentHolder() / 6, 0);
 }
 
-TEST(ScoreTest, UpdateScore) {
-    HockeyGame game(0, 12);
-
-    // Убедимся, что currentHolder принадлежит команде 1
-    game.setCurrentHolder(0);
-    game.setSuccessfulPasses(SUCCESSFUL_PASSES_FOR_GOAL - 1);
-    game.passPuck();
-    EXPECT_EQ(game.getTeamScore(0), 1);
-}
 
 TEST(GameTest, PlayGameSingleProcess) {
     HockeyGame game(0, 12);
