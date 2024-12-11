@@ -15,6 +15,14 @@ public:
     HockeyGame(int rank, int size);
     void playGame();
 
+    // Публичные методы для доступа к приватным членам
+    int getCurrentHolder() const { return currentHolder; }
+    void setCurrentHolder(int holder) { currentHolder = holder; }
+    int getSuccessfulPasses() const { return successfulPasses; }
+    void setSuccessfulPasses(int passes) { successfulPasses = passes; }
+    int getTeamScore(int team) const { return teamScores[team]; }
+    void passPuck();
+
 private:
     int rank;
     int size;
@@ -22,7 +30,6 @@ private:
     int currentHolder;
     int successfulPasses;
 
-    void passPuck();
     void getScore();
 };
 
@@ -33,7 +40,7 @@ HockeyGame::HockeyGame(int rank, int size) : rank(rank), size(size), successfulP
 }
 
 void HockeyGame::passPuck() {
-    int team = currentHolder / TEAM_SIZE; 
+    int team = currentHolder / TEAM_SIZE;
 
     double randomValue = (double)std::rand() / RAND_MAX;
     int nextHolder;
@@ -45,10 +52,10 @@ void HockeyGame::passPuck() {
         successfulPasses++;
     } else {
         nextHolder = (1 - team) * TEAM_SIZE + std::rand() % TEAM_SIZE;
-        successfulPasses = 0; 
+        successfulPasses = 0;
     }
 
-    // РџСЂРѕРІРµСЂРєР° РЅР° РіРѕР»
+    // Проверка на гол
     if (successfulPasses == SUCCESSFUL_PASSES_FOR_GOAL) {
         teamScores[team]++;
         successfulPasses = 0;
@@ -86,6 +93,7 @@ void HockeyGame::playGame() {
     }
 }
 
+#ifndef TESTING
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
 
@@ -101,7 +109,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    std::srand(static_cast<unsigned>(std::time(0)) + rank * 100 + static_cast<int>(MPI_Wtime() * 1000));// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіРµРЅРµСЂР°С‚РѕСЂР° СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    std::srand(static_cast<unsigned>(std::time(0)) + rank * 100 + static_cast<int>(MPI_Wtime() * 1000));// Инициализация генератора случайных чисел
 
     HockeyGame game(rank, size);
     game.playGame();
@@ -109,3 +117,4 @@ int main(int argc, char** argv) {
     MPI_Finalize();
     return 0;
 }
+#endif
