@@ -1,22 +1,23 @@
 #include <gtest/gtest.h>
-using "hockeyGame.cpp";
+#include <mpi.h>
+#include "hockeyGame.cpp"
 
 TEST(PassPuckTest, SameTeamPass) {
-    std::srand(0); 
+    std::srand(0);
     HockeyGame game(0, 12);
-    game.currentHolder = 2;  
+    game.currentHolder = 2;
     game.passPuck();
 
-    EXPECT_NE(game.currentHolder, 2); 
+    EXPECT_NE(game.currentHolder, 2);
 }
 
 TEST(PassPuckTest, OpponentTeamPass) {
-    std::srand(0);  
+    std::srand(0);
     HockeyGame game(0, 12);
-    game.currentHolder = 2; 
+    game.currentHolder = 2;
     game.passPuck();
 
-    EXPECT_NE(game.currentHolder / 6, 0); 
+    EXPECT_NE(game.currentHolder / 6, 0);
 }
 
 TEST(ScoreTest, UpdateScore) {
@@ -30,7 +31,7 @@ TEST(ScoreTest, UpdateScore) {
 TEST(GameTest, PlayGameSingleProcess) {
     HockeyGame game(0, 12);
     game.playGame();
-    
+
     EXPECT_GE(game.teamScores[0], 0);
     EXPECT_GE(game.teamScores[1], 0);
 }
