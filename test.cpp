@@ -1,3 +1,4 @@
+#define TESTING
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include "hockeyGame.cpp"
