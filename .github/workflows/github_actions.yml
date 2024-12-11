@@ -28,11 +28,9 @@ jobs:
       - name: Install cppunit
         run: sudo apt install -y libcppunit-dev
 
-      # Install g++ and compile the program
-      - name: Install g++ and compile the program
-        run: |
-          sudo apt-get install -y g++
-          g++ -fopenmp hockey_simulation.cpp -o main
+      # Install g++
+      - name: Install g++
+        run: sudo apt-get install -y g++
 
       # Install MPI
       - name: Install MPI
