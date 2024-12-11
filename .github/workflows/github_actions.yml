@@ -42,7 +42,7 @@ jobs:
 
       # Compile the program with MPI
       - name: Compile the program with MPI
-        run: mpic++ -o mpi_program hockey_simulation.cpp
+        run: mpic++ -o mpi_program hockeyGame.cpp
 
       # Compile and run tests
       - name: Compile and run tests
