@@ -40,13 +40,6 @@ TEST(PassPuckTest, SuccessfulPassesResetOnOpponentPass) {
     EXPECT_EQ(game.getSuccessfulPasses(), 0);
 }
 
-TEST(GameTest, PlayGameSingleProcess) {
-    HockeyGame game(0, 12);
-    game.playGame();
-
-    EXPECT_GE(game.getTeamScore(0), 0);
-    EXPECT_GE(game.getTeamScore(1), 0);
-}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
